@@ -1,0 +1,6 @@
+{
+  "backend": "http://178.46.163.158:8000/api/",
+  "storage": "http://178.46.163.158:8000/storage/",
+  "frontend": "http://178.46.163.158/",
+  "faq": "https://telegra.ph/"
+}

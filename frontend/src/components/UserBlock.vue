@@ -1,0 +1,45 @@
+<script>
+import {toLink} from "@/utils.js";
+import RatingBlock from "@/components/RatingBlock.vue";
+
+export default {
+    name: "UserBlock",
+    components: {RatingBlock},
+    methods: {toLink},
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        }
+    }
+}
+</script>
+
+<template>
+    <div v-if="user" @click.stop="$router.push('/user/' + user.id)" class="user_block_header user_block">
+        <img :src="user.avatar" alt="">
+        <div class="user_block_info">
+            <div class="user_block_info_name">{{ user.fullname }}</div>
+            <div class="user_block_info_city" v-if="user.city">{{ user.city.name }}</div>
+            <div class="block_post_img">
+<!--                <rating-block :clickable="false" :rating="user.rating" :id="user.id" type="user"/>-->
+                <div class="rating green-bgc">
+                    <img src="/star.svg" alt="">
+                    <div class="grey-light">{{ user.rating }}</div>
+                </div>
+            </div>
+        </div>
+        <button @click.stop="$router.push('/chats?id=' + user.id)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M22 12C22 17.5229 17.5229 22 12 22C9.01327 22 2 22 2 22C2 22 2 14.5361 2 12C2 6.47715 6.47717 2 12 2C17.5229 2 22 6.47715 22 12Z" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 9H16" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 13H16" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 17H12" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+</template>
+
+<style scoped>
+
+</style>

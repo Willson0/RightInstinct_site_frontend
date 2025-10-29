@@ -1,0 +1,39 @@
+<script>
+export default {
+    name: "FooterComponent"
+}
+</script>
+
+<template>
+    <footer>
+        <div>
+            <div class="footer_main">
+                <a href="/" class="footer_logo">
+                    <img src="/logo.png" alt="Логотип проекта">
+                    <div>Верное чутьё</div>
+                </a>
+                <nav class="footer_nav">
+                    <a href="/">Политика конфиденциальности</a>
+                    <a href="/">Условия использования</a>
+                </nav>
+                <div class="footer_contacts">
+                    <div class="footer_contacts_title">контакты</div>
+                    <div class="footer_contacts_list">
+                        <a href="/">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="32" height="32" rx="16" fill="#787D46"/>
+                                <path d="M22.4 10.0819L19.9956 22.6339C19.9956 22.6339 19.6592 23.5042 18.7351 23.0868L13.1876 18.6822L13.1619 18.6692C13.9112 17.9724 19.7219 12.5622 19.9758 12.317C20.369 11.9372 20.1249 11.7111 19.6684 11.998L11.0854 17.6425L7.77406 16.4887C7.77406 16.4887 7.25296 16.2968 7.20283 15.8794C7.15203 15.4613 7.79121 15.2352 7.79121 15.2352L21.2905 9.75126C21.2905 9.75126 22.4 9.24644 22.4 10.0819Z" fill="white"/>
+                            </svg>
+                            <div>Telegram: @vernoe_support</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer_watermark">2025. Верное чутьё. Все права защищены</div>
+        </div>
+    </footer>
+</template>
+
+<style scoped>
+
+</style>
