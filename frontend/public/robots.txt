@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /verify/*
+Sitemap: https://vchutye.ru/sitemap.xml
