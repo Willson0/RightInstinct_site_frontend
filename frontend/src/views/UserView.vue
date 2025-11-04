@@ -1,7 +1,6 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
-import WallComponent from "@/components/WallComponent.vue";
 import axios from 'axios';
 import config from "@/config.json";
 import {favourite, notify, whatError} from "@/utils.js";
@@ -9,10 +8,11 @@ import RatingBlock from "@/components/RatingBlock.vue";
 import PostBlock from "@/components/PostBlock.vue";
 import EventBlock from "@/components/EventBlock.vue";
 import Placeholder from "@/components/Placeholder.vue";
+import WallBlock from "@/components/WallBlock.vue";
 
 export default {
     name: "UserView",
-    components: {Placeholder, EventBlock, PostBlock, RatingBlock, WallComponent, FooterComponent, HeaderComponent},
+    components: {WallBlock, Placeholder, EventBlock, PostBlock, RatingBlock, FooterComponent, HeaderComponent},
     data () {
         return {
             us: {},
@@ -124,7 +124,7 @@ export default {
                         <rating-block v-else-if="us.rating" type="user" :rating="us.rating" :id="us.id" />
                     </div>
                 </div>
-                <div class="user_info_buttons">
+                <div class="user_info_buttons" v-if="user.id">
                     <button @click="$router.push('/chats?id=' + us.id)">
                         <div>
                             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +160,7 @@ export default {
                 </div>
             </section>
             <div>
-                <section class="user_content">
+                <section class="user_content" v-if="us.posts?.length || us.services?.length || us.events?.length">
                     <aside v-if="us.posts?.length || !isLoaded">
                         <h2>Объявления</h2>
                         <div class="user_content_list" ref="postSlider" @mousedown.stop="mousedown($event, 'postSlider')">
@@ -208,10 +208,10 @@ export default {
                     </aside>
                 </section>
                 <section class="user_wall">
-                    <div class="user_wall_filler">
+                    <div class="user_wall_filler" v-if="!us.walls?.length">
                         <div>Тут пока что ничего нет...</div>
                     </div>
-<!--                    <wall-component />-->
+                    <wall-block :wall="post" v-for="post in us.walls"/>
                 </section>
             </div>
         </main>

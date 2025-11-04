@@ -62,6 +62,11 @@ export default {
                 this.isLoading = false;
             })
         },
+    },
+    computed: {
+        user () {
+            return this.$store.state.user;
+        }
     }
 }
 </script>
@@ -72,7 +77,7 @@ export default {
         <main class="posts_view">
             <div class="posts_header">
                 <h1>Мероприятия</h1>
-                <div class="events_header_button">
+                <div class="events_header_button" v-if="user">
                     <button class="posts_header_add" @click="$router.push('/store?type=event')">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.03 5L12.0117 19" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

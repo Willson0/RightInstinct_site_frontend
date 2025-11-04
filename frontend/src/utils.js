@@ -138,21 +138,25 @@ export async function hideList (event) {
     el.querySelector(".store_input_select_list").classList.remove("active");
 }
 
-export function favourite (action, type, id, isLoading, user) {
+export async function favourite (action, type, id, isLoading, user) {
     if (isLoading.status) return;
 
+    let newUser = {
+        ...user,
+        favourites: { ...user.favourites }
+    };
     if (action) {
         notify("Успешно добавлено в избранное!");
-        if (!user || !user.favourites || !Array.isArray(user.favourites[type])) user.favourites[type] = [];
-        user.favourites[type].push(id);
+        if (!user || !user.favourites || !Array.isArray(user.favourites[type])) newUser.favourites[type] = [];
+        newUser.favourites[type].push(id);
     } else {
         notify("Успешно удалено из избранного!");
-        user.favourites[type] = user.favourites[type].filter(el => el !== id);
+        newUser.favourites[type] = newUser.favourites[type].filter(el => el !== id);
     }
-    this.$store.dispatch("updateUser", user);
+    this.$store.dispatch("updateUser", newUser);
 
     isLoading.status = true;
-    axios.post(config.backend + "favourite" + (action ? '' : '/delete'), {
+    await axios.post(config.backend + "favourite" + (action ? '' : '/delete'), {
         type: type,
         object_id: id,
     }).then((response) => {

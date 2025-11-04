@@ -13,8 +13,8 @@ export default {
                     <div>Верное чутьё</div>
                 </a>
                 <nav class="footer_nav">
-                    <a href="/">Политика конфиденциальности</a>
-                    <a href="/">Условия использования</a>
+                    <a href="/policy">Политика конфиденциальности</a>
+                    <a href="/terms">Условия использования</a>
                 </nav>
                 <div class="footer_contacts">
                     <div class="footer_contacts_title">контакты</div>

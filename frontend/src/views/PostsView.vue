@@ -120,7 +120,7 @@ export default {
                             <path d="M3 4.5L10.2 12.9089V19.2222L13.8 21V12.9089L21 4.5H3Z" stroke="#222B1B" stroke-width="2" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button class="posts_header_add" @click="$router.push('/store?type=post')">
+                    <button v-if="user" class="posts_header_add" @click="$router.push('/store?type=post')">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.03 5L12.0117 19" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M5 12H19" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -136,7 +136,7 @@ export default {
             </div>
             <div class="posts_list">
                 <div v-for="el in 3" class="placeholder" v-if="feed === false" style="width: 234px; height: 299px;"></div>
-                <post-block v-for="obj in feed" :type="type" :object="obj" />
+                <post-block v-for="obj in feed" :type="type" :object="obj" @delete="fetchData"/>
                 <div v-if="feed.length === 0">Тут пока что ничего нет...</div>
             </div>
             <pagination-component :page="page" :count="pageCount" @selected="page = $event; fetchData()"/>

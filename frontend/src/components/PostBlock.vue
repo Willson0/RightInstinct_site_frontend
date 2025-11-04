@@ -8,7 +8,7 @@ import PhotoSlider from "@/components/PhotoSlider.vue";
 export default {
     name: "PostBlock",
     components: {PhotoSlider, RatingBlock},
-    emits: ['freeze', 'unfreeze'],
+    emits: ['freeze', 'unfreeze', 'delete'],
     methods: {
         favourite,
         async deletePost (id) {
@@ -21,6 +21,7 @@ export default {
             if (confirm(`Вы уверены, что хотите удалить ${enums[this.type].translate} \"${name}\"?`)) {
                 await axios.post(config.backend + this.type + "/" + id + "/delete")
                 .then((response) => {
+                    this.$emit("delete");
                     notify("Удаление успешно завершено!");
                     this.user.my[enums[this.type].my] =
                         this.user.my[enums[this.type].my].filter(el => el.id !== id);

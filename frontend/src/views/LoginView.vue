@@ -16,6 +16,23 @@ export default {
     },
     async mounted () {
         document.body.style.backgroundColor = "#2D3014";
+
+        window.onTelegramAuth = async (user) => {
+            await axios.post(config.backend + "site/auth/telegram", user)
+                .then((response) => {
+                    notify("Успешная регистрация!");
+                    this.$router.push('/profile');
+                }).catch((error) => notify(whatError(error), 1))
+        }
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://telegram.org/js/telegram-widget.js?22';
+        script.setAttribute('data-telegram-login', 'test_right_instinct_bot');
+        script.setAttribute('data-size', 'large');
+        script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+        script.setAttribute('data-request-access', 'write');
+        document.getElementById('telegram-container').appendChild(script);
     },
     unmounted () {
         document.body.style.backgroundColor = "";
@@ -37,6 +54,11 @@ export default {
             }).catch((error) => {
                 notify(whatError(error), 1);
             })
+        },
+    },
+    computed: {
+        isInactive () {
+            return (this.email.length === 0) || (this.password.length < 8);
         }
     }
 }
@@ -60,8 +82,9 @@ export default {
                     </div>
                 </div>
                 <div class="login_view_buttons">
-                    <button @click="login">Войти</button>
+                    <button @click="!isInactive ? login() : null" :class="{'inactive': isInactive}">Войти</button>
                     <button @click="$router.push('/registration')">Зарегистрироваться</button>
+                    <div id="telegram-container"></div>
                 </div>
             </div>
         </main>

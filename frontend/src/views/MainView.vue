@@ -4,12 +4,12 @@ import PostBlock from "@/components/PostBlock.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import config from "@/config.json"
 import axios from "axios";
-import WallComponent from "@/components/WallComponent.vue";
 import EventBlock from "@/components/EventBlock.vue";
+import WallBlock from "@/components/WallBlock.vue";
 
 export default {
     name: "MainView",
-    components: {EventBlock, WallComponent, FooterComponent, PostBlock, HeaderComponent},
+    components: {WallBlock, EventBlock, FooterComponent, PostBlock, HeaderComponent},
     data () {
         return {
             user: {},
@@ -202,9 +202,9 @@ export default {
                     </div>
                 </button>
             </section>
-<!--            <section class="main_wall">-->
-<!--                <wall-component v-for="el in 3"/>-->
-<!--            </section>-->
+            <section class="main_wall">
+                <wall-block :wall="post" v-for="post in feed.walls"/>
+            </section>
         </main>
     </div>
     <footer-component />

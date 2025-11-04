@@ -14,6 +14,7 @@ export default {
         return {
             gender: null, // 0 - ж 1 - м
             title: "",
+            text: "",
             breed: "",
             city: "",
             price: "",
@@ -122,10 +123,14 @@ export default {
                     [this.description.length < 10, "Описание не может быть меньше 10 символов!", "description"],
                     [this.details.length < 10, "Описание деталей не может быть меньше 10 символов!", "details"],
                 ]
+            else if (this.type === 'wall')
+                rules = [
+                    [this.text.length < 10, "Описание не может быть меньше 10 символов!", "text"],
+                ]
             if (this.link.length > 0) rules.push([!this.isValidUrl(this.link), "Неправильная ссылка!", "link"]);
 
             this.city = this.data.cities.find(el => el.name.toLowerCase() === this.cityString.toLowerCase())?.id;
-            rules.push([!this.city, "Выберите правильный город!", "city"]);
+            if (this.type !== 'wall') rules.push([!this.city, "Выберите правильный город!", "city"]);
 
             let isError = false;
             for (let rule of rules) {
@@ -141,8 +146,10 @@ export default {
 
             let fd = new FormData();
             fd.append("title", this.title);
-            fd.append("description", this.description);
-            fd.append("city_id", this.city);
+            if (this.type !== 'wall') {
+                fd.append("description", this.description);
+                fd.append("city_id", this.city);
+            }
             if (this.type === "post") {
                 fd.append("age", this.age);
                 fd.append("gender", this.gender);
@@ -166,6 +173,8 @@ export default {
                 fd.append("details", this.details);
                 fd.append("start_date", toLocalSimpleISO(this.dates[0]));
                 fd.append("end_date", toLocalSimpleISO(this.dates[1]));
+            } else if (this.type === "wall") {
+                fd.append("text", this.text)
             }
 
             let index = 0;
@@ -212,6 +221,9 @@ export default {
         ruleEvent () {
             return this.photos.length !== 0 && this.category && this.cityString && this.title && this.details
                 && this.dates.length > 0 && this.description && !this.isLoading;
+        },
+        ruleWall () {
+            return this.photos.length !== 0 && this.title && this.text && !this.isLoading;
         }
     },
     watch: {
@@ -239,12 +251,13 @@ export default {
     <div class="container">
         <headerComponent />
         <main class="store">
-            <h1 class="store_title">Добавить {{ this.type === 'post' ? 'объявление' : this.type === 'service' ? 'услугу' : 'мероприятие' }}</h1>
+            <h1 class="store_title">Добавить {{ this.type === 'post' ? 'объявление' : this.type === 'service' ? 'услугу' : this.type === 'wall' ? 'запись' : 'мероприятие' }}</h1>
             <div class="store_selector" v-if="this.type === 'post'">
                 <div :class="{'active': isOld}" @click="isOld=true">Взрослая</div>
                 <div :class="{'active': !isOld}" @click="isOld=false">Щенки</div>
             </div>
-            <input v-model="title" class="store_input" type="text" placeholder="Название">
+            <input v-model="title" class="store_input" type="text" :placeholder="this.type === 'wall' ? 'Заголовок' : 'Название'">
+            <textarea v-model="text" ref="text" v-if="this.type === 'wall'" class="store_text input" placeholder="Описание"></textarea>
             <input ref="description" v-if="['event'].includes(type)" v-model="description" class="store_input" type="text" placeholder="Описание">
             <div v-if="['post'].includes(type)" style="z-index:12" class="store_input_container">
                 <input ref="age" v-model="age" type="number" placeholder="Возраст (мес)">
@@ -292,7 +305,7 @@ export default {
             <input v-if="['post'].includes(type) && isOld === false" ref="mother" v-model="mother" placeholder="Родитель сука">
             <input v-if="['post'].includes(type) && isOld === false" ref="father" v-model="father" placeholder="Родитель кобель">
             <div style="z-index:8" class="store_input_select_container">
-                <div ref="city" @click="openList($event, 'city_string');" class="store_input_select">
+                <div v-if="this.type !== 'wall'" ref="city" @click="openList($event, 'city_string');" class="store_input_select">
                     <div class="store_input_select_main">
                         <input type="text" v-model="cityString" style="padding: 0; border: 0;" id="city_string"
                                :placeholder="!['event'].includes(type) ? 'Город' : 'Место проведения'" >
@@ -413,7 +426,7 @@ export default {
             <input @input="addImage" id="image" type="file" style="display:none;" accept="image/*">
             <input v-if="['post', 'service'].includes(type)" ref="link" v-model="link" type="text" placeholder="Ссылка на видео">
             <textarea v-if="['event'].includes(type)" ref="details" placeholder="Подробности" rows="2" v-model="details" class="input"></textarea>
-            <textarea v-else ref="description" placeholder="Описание" rows="2" v-model="description" class="input"></textarea>
+            <textarea v-else-if="this.type !== 'wall'" ref="description" placeholder="Описание" rows="2" v-model="description" class="input"></textarea>
             <input v-if="['post'].includes(type)" ref="rewards" v-model="rewards" type="text" :placeholder="isOld ? 'Титулы и награды': 'Количество кобелей / сук'">
             <button v-if="['post'].includes(type)"  class="store_button button"
                     :class="rulePost ? 'active' : ''" @click="rulePost ? sendData() : ''">Сохранить</button>
@@ -421,6 +434,8 @@ export default {
                     :class="ruleService ? 'active' : ''" @click="ruleService ? sendData() : ''">Сохранить</button>
             <button v-if="['event'].includes(type)"  class="store_button button"
                     :class="ruleEvent ? 'active' : ''" @click="ruleEvent ? sendData() : ''">Отправить на модерацию</button>
+            <button v-if="['wall'].includes(type)"  class="store_button store_wall_button button"
+                    :class="ruleWall ? 'active' : ''" @click="ruleWall ? sendData() : ''">Опубликовать</button>
         </main>
     </div>
     <footer-component />

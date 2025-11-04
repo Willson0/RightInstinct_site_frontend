@@ -22,6 +22,8 @@ import MyRatingsView from "@/views/MyRatingsView.vue";
 import MySubscriptions from "@/views/MySubscriptions.vue";
 import MyFavourites from "@/views/MyFavourites.vue";
 import ChatsView from "@/views/ChatsView.vue";
+import PolicyView from "@/views/PolicyView.vue";
+import TermsView from "@/views/TermsView.vue";
 
 
 const routes = [
@@ -223,6 +225,20 @@ const routes = [
         meta: {
             title: 'Профиль пользователя — Верное чутье',
             description: 'Просмотрите профиль владельца или специалиста по охотничьим собакам. Контакты, объявления и отзывы на сайте «Верное чутье».'
+        }
+    },
+    {
+        path: '/policy',
+        component: PolicyView,
+        meta: {
+            title: 'Политика конфиденциальности — Верное чутье',
+        }
+    },
+    {
+        path: '/terms',
+        component: TermsView,
+        meta: {
+            title: 'Условия использования — Верное чутье',
         }
     },
 ]

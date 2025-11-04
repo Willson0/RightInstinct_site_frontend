@@ -7,9 +7,11 @@ import {complain, copy, favourite, notify, whatError} from "@/utils.js";
 import RatingBlock from "@/components/RatingBlock.vue";
 import Placeholder from "@/components/Placeholder.vue";
 import PhotoSlider from "@/components/PhotoSlider.vue";
+import UserBlock from "@/components/UserBlock.vue";
 export default {
     name: "ShowView",
     components: {
+        UserBlock,
         PhotoSlider,
         Placeholder,
         RatingBlock,
@@ -145,6 +147,16 @@ export default {
                     {{ object.description }}
                 </div>
                 <div v-else class="placeholder show_text_description" style="height: 48px;" ></div>
+                <template v-if="['post', 'service'].includes(type)">
+                    <div @click="$router.push('/user/' + object.user.id)" v-if="object.user" class="show_text_user">
+                        <img :src="object.user.avatar" alt="">
+                        <div>
+                            <h3>Хозяин</h3>
+                            <span>{{ object.user.fullname }}</span>
+                        </div>
+                    </div>
+                    <placeholder width="120" height="46" :on-user="false" v-else class="show_text_user"/>
+                </template>
                 <div class="show_text_buttons">
                     <div class="button" v-if="['post', 'service'].includes(type)"><h3>{{ beautifullyPrice }}</h3></div>
                     <div class="show_text_buttons_dates button" v-else>

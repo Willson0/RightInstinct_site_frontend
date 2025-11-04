@@ -22,6 +22,10 @@ export default {
     mounted () {
         this.index = this.startIndex;
         document.body.style.overflow = "hidden";
+
+        window.addEventListener('resize', () => {
+            this.slideWidth = window.innerWidth * 0.9;
+        })
     },
     unmounted () {
         document.body.style.overflow = "";

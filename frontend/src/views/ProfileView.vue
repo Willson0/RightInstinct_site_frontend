@@ -8,10 +8,11 @@ import axios from 'axios';
 import PostBlock from "@/components/PostBlock.vue";
 import Placeholder from "@/components/Placeholder.vue";
 import {toLink} from "@/utils.js";
+import WallBlock from "@/components/WallBlock.vue";
 
 export default {
     name: "ProfileView",
-    components: {Placeholder, PostBlock, EventBlock, RatingBlock, FooterComponent, HeaderComponent},
+    components: {WallBlock, Placeholder, PostBlock, EventBlock, RatingBlock, FooterComponent, HeaderComponent},
     data () {
         return {
             user: {},
@@ -283,6 +284,18 @@ export default {
                         </div>
                     </button>
                 </div>
+            </section>
+            <section class="profile_mywall">
+                <button @click="$router.push('/store?type=wall')">
+                    <div>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.03 5L12.0117 19" stroke="#222B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="#222B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div>Добавить запись</div>
+                    </div>
+                </button>
+                <wall-block v-for="object in user.my?.walls" :wall="object"/>
             </section>
         </main>
     </div>
