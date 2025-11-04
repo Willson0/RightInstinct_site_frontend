@@ -109,7 +109,7 @@ export default {
         <div class="photo_slider_counter">
             {{ index + 1 }} из {{ images.length }}
         </div>
-        <button class="photo_slider_close" @click="this.$emit('close');">
+        <button class="photo_slider_close" @click.stop="this.$emit('close');">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 4L20 20" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M4 20L20 4" stroke="#F1EBD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
